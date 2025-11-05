@@ -1,0 +1,347 @@
+@import "tailwindcss";
+
+:root {
+  --background: #181a20;
+  --foreground: #e6e9f0;
+  --primary: #ffffff;
+  --primary-light: #cccccc;
+  --primary-dark: #23242a;
+  --glass-bg: rgba(24, 26, 32, 1.0);
+  --glass-blur: 12px;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #181a20;
+    --foreground: #e6e9f0;
+    --primary: #ffffff;
+    --primary-light: #cccccc;
+    --primary-dark: #23242a;
+    --glass-bg: rgba(24, 26, 32, 0.85);
+    --glass-blur: 12px;
+    --glass-border: rgba(255, 255, 255, 0.12);
+  }
+}
+
+body {
+  background: #111216;
+  color: var(--foreground);
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.header-title {
+  font-variant: small-caps;
+}
+
+/* Dark mode styles for manual toggle */
+.dark {
+  --background: #181a20;
+  --foreground: #e6e9f0;
+  --primary: #ffffff;
+  --primary-light: #cccccc;
+  --primary-dark: #23242a;
+  --glass-bg: rgba(24, 26, 32, 0.85);
+  --glass-blur: 12px;
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+.dark body {
+  background: linear-gradient(135deg, #181a20 0%, #23242a 100%);
+}
+
+.glass {
+  background: rgba(17,18,22,1.0);
+  /* backdrop-filter: blur(var(--glass-blur)); */
+  border: 1.5px solid var(--glass-border);
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.04);
+  border-radius: 2rem;
+}
+
+.nav-header {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  max-width: calc(100vw - 2rem);
+  margin-top: 1rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mobile styles */
+@media (min-width: 640px) {
+  .nav-header {
+    padding: 1.25rem 2rem;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+  .nav-header {
+    padding: 1.5rem 2.5rem;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .nav-header {
+    padding: 1.5rem 3rem;
+  }
+}
+
+/* Navigation link responsive styles */
+.nav-link {
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Ensure navigation doesn't overflow on very small screens */
+@media (max-width: 480px) {
+  .nav-header {
+    padding: 0.75rem 1rem;
+    max-width: calc(100vw - 1rem);
+  }
+  
+  .nav-link {
+    font-size: 1rem !important;
+    padding: 0.5rem 0.5rem !important;
+  }
+}
+
+.nav-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button, input, .rounded-full, .rounded-3xl {
+  border-radius: 2rem !important;
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
+.scroll-to-top-btn.fade-out {
+  animation: fadeOut 0.4s ease-out forwards;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.explore-btn {
+  transition: transform 6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.explore-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Center MathJax block (display) math */
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  margin: 2em auto !important;
+  text-align: center !important;
+}
+
+/* Force MathJax SVG block math to be centered and full width */
+mjx-container[jax="SVG"][display="true"] {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 2em 0 !important;
+  text-align: center !important;
+}
+mjx-container[jax="SVG"][display="true"] > svg {
+  display: block !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+}
+
+/* Ensure inline MathJax math does not introduce a newline */
+mjx-container.MathJax:not([display]) {
+  display: inline !important;
+  vertical-align: middle;
+}
+
+.math-inline svg {
+    display: inline !important;
+}
+
+mjx-container:not([display]) svg {
+  display: inline !important;
+  vertical-align: middle;
+}
+
+/* HTML Content Styling for ProjectArticle */
+.html-content h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.html-content h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.html-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.html-content h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: white;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.html-content h5 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.html-content p {
+  color: white;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.html-content ul, .html-content ol {
+  color: white;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.html-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.html-content hr {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 2rem 0;
+}
+
+.html-content em {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.html-content strong {
+  font-weight: bold;
+}
+
+.html-content br {
+  line-height: 2;
+}
+
+/* Math display styling */
+.html-content div {
+  margin: 1rem 0;
+}
+
+/* Code background styling */
+.html-content code {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2px 4px;
+  border-radius: 6px;
+}

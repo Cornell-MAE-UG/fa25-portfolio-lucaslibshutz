@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- KaTeX is loaded globally in layout.tsx -->
+    <style>
+        /* Page-specific styles for momentum-controller */
+        .latex-block {
+            background-color: rgb(17 24 39 / 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgb(55 65 81);
+            margin: 1rem 0;
+        }
+        
+        .content-paragraph {
+            color: rgb(229 231 235);
+            line-height: 1.625;
+            margin-bottom: 1rem;
+        }
+        
+        /* Collapsible section styling */
+        .theoretical-section summary {
+            list-style: none;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .theoretical-section summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .theoretical-section summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 1rem;
+            line-height: 1;
+        }
+        
+        .theoretical-section[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        .theoretical-content {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+        
+        /* Subsection styling - completely independent from main section */
+        details.subsection {
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+        }
+        
+        details.subsection summary {
+            list-style: none;
+            position: relative;
+            padding-left: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        details.subsection summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        /* Closed subsection arrow - pointing right */
+        details.subsection:not([open]) summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        /* Open subsection arrow - pointing down */
+        details.subsection[open] summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        .subsection summary h3 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        .subsection-content {
+            animation: slideDown 0.3s ease-out;
+            padding-top: 0.5rem;
+        }
+        
+        /* Default heading styles */
+        h1.page-title {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2.section-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        h3.subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h4.subheading {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .collapsible-summary {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .collapsible-summary:hover {
+            color: rgb(147 197 253);
+        }
+        
+        .video-title {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="page-title">Humanoid Robot Whole Body Controller</h1>
+
+    <h4 class="subheading"><em>A momentum-based humanoid balancing controller, made in </em><a href="https://github.com/jax-ml/jax" class="text-blue-400 hover:text-blue-300 transition-colors"><code class="bg-gray-800 px-2 py-1 rounded">JAX</code></a></h4>
+
+    <hr class="border-gray-600 my-8">
+    
+    <h2 class="section-title">Project Overview</h2>
+    
+    <div class="bg-gray-800/30 border-blue-500 p-2 rounded-r-lg py-4 px-4 flex items-center">
+        <p class="text-gray-200 leading-relaxed">
+            This controller implementation is an adapation of the work done in the <a href="https://arxiv.org/pdf/1603.04178" class="text-blue-400 hover:text-blue-300 transition-colors">Nava et al., 2017</a> paper, which describes the full theoretical background on how the related control algorithms are formulated.
+        </p>
+    </div>
+    
+    <h3 class="subsection-title">Key Aspects</h3>
+    
+    <div class="bg-green-900/20 border border-green-500/30 rounded-lg p-4 mb-6">
+        <ul class="space-y-2">
+          <li class="text-gray-200"><strong class="text-green-300">Modularity</strong>: Written in <a href="https://github.com/ami-iit/jaxsim" class="text-blue-400 hover:text-blue-300 transition-colors"><code class="bg-gray-800 px-2 py-1 rounded">JAXSim</code></a>, the control architecture is easily extensible to any other compatible robot.</li>
+          <li class="text-gray-200"><strong class="text-green-300">Optimization</strong>: As the controllers are written in pure <code>JAX</code>, they are fully optimizable and differentiable with respect to any user defined parameter.</li>
+        </ul>
+    </div>
+    
+    <hr class="border-gray-600 my-8">
+    
+    <details class="theoretical-section mb-8">
+        <summary class="section-title collapsible-summary">
+            <h2 class="section-title">Controller Theoretical Overview</h2>
+        </summary>
+        
+        <div class="theoretical-content mt-6">
+            <p class="content-paragraph">The core of this controller is based on centroidal momentum dynamics, which provides a unified approach to whole-body motion generation.</p>
+
+            <details class="subsection">
+                <summary class="subheading collapsible-summary">
+                    <h3 class="subsection-title">Equality Constraints</h3>
+                </summary>
+                <div class="subsection-content">
+                    <p class="content-paragraph">We start with the equality constraints that are passed into the optimizer.</p>
+    
+    <p class="content-paragraph">We assume that at least one foot is in contact with the ground. For each contact point on each foot, we compute the individual contact contributions:</p>
+    
+    <div class="latex-block">$$\mathbf{r}_i = {}^W\mathbf{p}_i - {}^W\mathbf{p}_C$$</div>
+    
+    <p class="content-paragraph">This is then transformed into a skew-symmetric operator:</p>
+    
+    <div class="latex-block">$$[\mathbf{r}_i \times] = S(\mathbf{r}_i)$$</div>
+    
+    <p class="content-paragraph">Where $S(x)\in\mathbb{R}^{3\times 3}$ is such that $S(x)y=x\times y$ with $\times$ as the cross operator in $\mathbb{R}^3$.</p>
+    
+    <p class="content-paragraph">The adjoint transform for each contact is extracted as:</p>
+    
+    <div class="latex-block">$${}_{G[w]}X^{i[w]} = \begin{bmatrix} I_3 & 0_{3\times 3} \\\ S(\mathbf{r}_i) & I_3 \end{bmatrix}$$</div>
+    
+    <p class="content-paragraph">Then, ${}^G X_i$ is then added to the $A_{eq}$ matrix, which will represent all of the equality constraints for the QP solver later in the pipeline. This $A_{eq}$ matrix is created via a parallel computation across all of the contacts, such that for two feet of the robot: </p>     
+    
+    <div class="latex-block">$$A_{eq} = \begin{bmatrix} {}_{G[w]}X^{L[w]} & {}_{G[w]}X^{R[w]} \end{bmatrix}$$</div>
+
+    <h4 class="subheading">Computing right hand side of equality constraints</h4>
+    
+    <p class="content-paragraph">The goal of the equality constraints, in general, is to enforce the general equation</p>
+    
+    <div class="latex-block">$$A_{eq}\mathbf{f} = \dot{H}^\star - \mathbf{f}_g$$</div>
+    
+    <p class="content-paragraph">Where $b_{eq}$ will be the right hand side of the equation above. The equation comes from Newton's second law on the robot's center of mass, with a force balance of the wrenches onthe feet and the gravity force acting on the center of mass equal to the rate of change of the momentum of the robot.</p>
+
+    <p class="content-paragraph">We formulate $\dot{H}^\star$ as the following:</p>
+    
+    <div class="latex-block">$$\dot{H}^\star = \begin{bmatrix} \dot{H}_L^\star \\\ \dot{H}_\omega^\star \end{bmatrix}$$</div>
+
+    <p class="content-paragraph">Where $\dot{H}_L^\star$ and $\dot{H}_\omega^\star$ are the desired linear and angular momentum computed via PI control, respectively. The computation is below:</p>
+
+    <div class="latex-block">
+        $$
+        \begin{gather*}
+        \dot{H} _L^\star = \ddot{p} _{\odot}^{des} - \text{diag}(K _{I(L)})(p _{\odot} - p _{\odot}^{des}) - \text{diag}(K _{P(L)}) \left( \frac{H_L}{m} - \dot{p} _{\odot}^{des} \right) \\\
+        \dot{H} _\omega^\star = H _\omega^{des} - \text{diag}(K _{P(\omega)}) H _\omega
+        \end{gather*}
+        $$
+    </div>
+    
+    <p class="content-paragraph">Above, $\odot$ denotes the center of mass of the robot. <br><br> For solving for the wrenches via this formulation, we use the Moore-Penrose pseudoinverse:</p>
+
+    <div class="latex-block">
+        $$
+        \mathbf{f}^\star = A^\dagger(\dot{H}^\star-\mathbf{f}_g)+N_A\mathbf{f}_0
+        $$
+    </div>
+
+    <p class="content-paragraph">Where $N_A$ is the null space projector of $A$, defined as $N_A=I-A^\dagger A$.</p>
+                </div>
+            </details>
+
+            <details class="subsection">
+                <summary class="subheading collapsible-summary">
+                    <h3 class="subsection-title">Computing Controller Torques</h3>
+                </summary>
+                <div class="subsection-content">
+
+    <p class="content-paragraph">The controller torque is defined as:</p>
+
+    <div class="latex-block">
+        $$
+        \tau = \mathbf{\Lambda}^\dagger(JM^{-1}(h-J^\top \mathbf{f})-\dot{J}\nu)+N_\lambda \tau_0
+        $$
+    </div>
+
+    <p class="content-paragraph">Where $\Lambda = JM^{-1}B$, with $J$ as the contact jacobian, $M$ as the mass inertia matrix, and $B$ as the torque selector matrix.</p>
+
+    <p class="content-paragraph">For the purposes of simulation, the computation fo torques is split as follows:</p>
+
+    <div class="latex-block">
+      $$
+      \tau = \tau_\sigma \mathbf{f}+\tau_\text{model}
+      $$
+    </div>
+
+    <p class="content-paragraph">Where $\mathbf{f}$ is the wrench output from the QP whose structure will be described below. Thus, the computation of $\tau_\sigma$ and $\tau_\text{model}$ is as follows: </p>
+
+    <div class="latex-block">
+      $$
+      \begin{gather*}
+      \tau_\sigma = -\mathbf{\Lambda}^\dagger J M^{-1} J^\top + N_\Lambda \tau_{0,\sigma} \\\
+      \tau_\text{model} = \mathbf{\Lambda}^\dagger (JM^{-1}h - \dot{J}\nu) + N_\lambda \tau_{0,\text{model}}
+      \end{gather*}
+      $$
+    </div>
+
+    <p class="content-paragraph">Furthermore, as suggested by the literature, the initial torques for each of these (at each time step) are computed as follows:</p>
+
+    <div class="latex-block">
+      $$
+      \begin{gather*}
+      u_0 = -K_P(s-s_\text{des})-K_D(\dot{s}-\dot{s}_\text{des}) \\\
+      \tau_{0,\sigma} = -J_j^\top + M_{bs}^\top M_b^{-1}J_b^\top \\\
+      \tau_{0,\text{model}} = h_j - M_{bs}^\top M_b^{-1}h_b + \bar{M}u_0
+      \end{gather*}
+      $$
+    </div>
+
+    <p class="content-paragraph">This has to follow the partition of the mass matrix as:</p>
+
+    <div class="latex-block">
+      $$
+      M = \begin{bmatrix} M_b & M_{bs} \\\ M_{bs}^\top & M_s \end{bmatrix}
+      $$
+    </div>
+
+    <p class="content-paragraph">And this is with $\bar{M}\triangleq M_s - M_{bs}^\top M_b^{-1} M_{bs}$.</p>
+                </div>
+            </details>
+
+            <details class="subsection">
+                <summary class="subheading collapsible-summary">
+                    <h3 class="subsection-title">Inequality Constraints</h3>
+                </summary>
+                <div class="subsection-content">
+
+    <p class="content-paragraph font-bold">In matrix form, we define each inequality constraint, with its description. In matrix form, these correspond to $A\mathbf{f}\leq \mathbf{b}$.</p>
+
+    <h4 class="content-paragraph font-medium text-white mt-6 mb-4">Positive Normal Force</h4>
+
+    <div class="latex-block">
+      $$
+      \begin{gather*}
+      A_1 = \begin{bmatrix} 0 & 0 & -1 & 0 & 0 & 0 \end{bmatrix} \\
+      b_1 = -f_{z,\mathrm{min}}
+      \end{gather*}
+      $$
+    </div>
+
+    <h4 class="content-paragraph font-medium text-white mt-6 mb-4">Friction Cone</h4>
+
+    <div class="latex-block">
+      $$
+      \begin{gather*}
+      A_2=\left[\begin{array}{cccccc}
+      1 & 0 & -\mu_s & 0 & 0 & 0 \\
+      -1 & 0 & -\mu_s & 0 & 0 & 0 \\
+      0 & 1 & -\mu_s & 0 & 0 & 0 \\
+      0 & -1 & -\mu_s & 0 & 0 & 0
+      \end{array}\right] \\
+      b_2 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+      \end{gather*}
+      $$
+    </div>
+
+    <h4 class="content-paragraph font-medium text-white mt-6 mb-4">Feet Center of Pressure</h4>
+
+    <div class="latex-block">
+      $$
+      \begin{gathered}
+      A_4=\left[\begin{array}{cccccc}
+      0 & 0 & -\mu_t & 0 & 0 & -1 \\
+      0 & 0 & -\mu_t & 0 & 0 & 1
+      \end{array}\right] \\
+      b_4=\left[\begin{array}{l}
+      0 \\
+      0
+      \end{array}\right]
+      \end{gathered}
+      $$
+    </div>
+
+    <h4 class="content-paragraph font-medium text-white mt-6 mb-4">Concatenating Constraints</h4>
+    <p class="content-paragraph">Finally, the inequality matrices passed back to the main control loop are as follows:</p>
+   
+    <div class="latex-block">
+      $$
+      A_\mathrm{ineq} = \begin{bmatrix} A_1 \\ A_2 \\ A_3 \\ A_4 \end{bmatrix}, \quad \mathbf{b}_\mathrm{ineq} = \begin{bmatrix} b_1 \\ b_2 \\ b_3 \\ b_4 \end{bmatrix}
+      $$
+    </div>
+
+    <p class="content-paragraph"><b>NOTE</b>: These inequality constraints are defined with respect to a <u>general foot contact</u> in the world frame, and are <i>not</i> oriented properly.</p>
+
+    <h4 class="content-paragraph font-medium text-white mt-6 mb-4">Transforming Inequality Constraints to Global Task Space</h4>
+
+    <p class="content-paragraph">As the contact and base wrenches operate from the same point, we use the transformation ${}^i X_W$ as follows:</p>
+
+    <div class="latex-block">
+      $$
+      {}_i X^W = \begin{bmatrix} ({}^W R_i)^\top & \mathbf{0}_{3\times 3} \\ \mathbf{0}_{3\times 3} & ({}^W R_i)^\top \end{bmatrix}
+      $$
+    </div>
+
+    <p class="content-paragraph">And as the inequalities are row vectors and not column vectors (that must act on a local wrench $\mathbf{f}_i$), the task space transformation is computed as:</p>
+
+    <div class="latex-block">
+    $$
+    A_\mathrm{global} = A_\mathrm{ineq} \cdot {}_i X^W
+    $$
+    </div>
+
+
+    <p class="content-paragraph">And because this is a linear homogeneous transformation, we have $\mathbf{b}_\mathrm{global}= \mathbf{b}_\mathrm{local}$. </p>
+                </div>
+            </details>
+
+            <details class="subsection">
+                <summary class="subheading collapsible-summary">
+                    <h3 class="subsection-title">QP Formulation: Two Foot Balancing</h3>
+                </summary>
+                <div class="subsection-content">
+
+    <p class="content-paragraph">With the equality and inequality constaints created, we now formulate the following QP to be solved:</p>
+
+    <div class="latex-block">
+    $$
+    \min_{\mathbf{f}_0} \frac{1}{2} || \tau_\mathrm{res}(\mathbf{f})||^2
+    $$
+    </div>
+
+    <p class="content-paragraph">Defining the residual torque comes from merging the pseudoinverse solution for $\mathbf{f}^\star$ with the initial splitting of torques as $\tau = \tau_\sigma \mathbf{f} + \tau_\mathrm{model}$:</p>
+
+    <div class="latex-block">
+    $$
+    \tau_\mathrm{res} = \tau_\sigma A^\dagger (\dot{H}^\star - \mathbf{f}_g) + \tau_\sigma N_A \mathbf{f}_0 + \tau_\mathrm{model}
+    $$
+    </div>
+
+    <p class="content-paragraph">Where the $\tau_\sigma$ terms are essentially just multiplying the substitution of $\mathbf{f}^\star$.</p>
+
+
+    <p class="content-paragraph">From this, we formulate the following QP:</p>
+
+    <div class="latex-block">
+    $$
+    \begin{gathered}
+      \mathbf{f}^\star = \min_{\mathbf{f}_0} \frac{1}{2} \mathbf{f}_0^\top Q \mathbf{f}_0 + \mathbf{f}_0^\top G \\
+      \text{s.t. } A_\mathrm{eq}\mathbf{f}_0 = \mathbf{b}_\mathrm{eq}, \\
+      A_\mathrm{ineq}\mathbf{f}_0 \leq \mathbf{b}_\mathrm{ineq} \\
+    \end{gathered}
+    $$
+    </div>
+
+    <p class="content-paragraph">By squaring the $\tau$ equation above, we get the following Hessian and gradient formulations:</p>
+
+    <div class="latex-block">
+    $$
+    \begin{gathered}
+      Q = (\tau_\sigma N_A)^\top (\tau_\sigma N_A) + \epsilon I \\
+      G = (\tau_\sigma N_A)^\top (\tau_\sigma A^\dagger(\dot{H}^\star - \mathbf{f}_g) + \tau_\mathrm{model}) \\
+    \end{gathered}
+    $$
+    </div>
+              </div>
+            </details>
+
+            <details class="subsection">
+              <summary class="subheading collapsible-summary">
+                <h3 class="subsection-title">Case Two: One Foot Balancing</h3>
+              </summary>
+              <div class="subsection-content">
+              
+                <h4 class="content-pragraph font-medium text-white mt-6 mb-4">Overview</h4>
+
+                <p class="content-paragraph">For the one foot case, the calculation of the torques, and the constraints are the same, where the QP formulation is the main aspect that differentiates the one foot case from the two foot case.</p>
+
+                <h4 class="content-pragraph font-medium text-white mt-6 mb-4">QP Formulation</h4>
+
+                <p class="content-paragraph">We define the following adjoint transformation, ${}^G X_1$, as follows:</p>
+
+                <div class="latex-block">
+                  $$
+                  {}_{G[w]} X^{1[w]} = {}_{G[w]} X^{L[w]} c_L(1-c_R) + {}_{G[w]} X^{R[w]} c_R(1-c_L)
+                  $$
+                </div>
+
+                  <p class="content-paragraph">Where $c_L, \ c_R$ are the contact statuses of each foot respectively. <br><br> From this, we can then define the following QP:</p>
+
+                <div class="latex-block">
+                  $$
+                  \begin{gathered}
+                  \mathbf{f}^\star = \mathrm{argmin}_{\mathbf{f}} \mathbf{f}^\top Q \mathbf{f} + \mathbf{f}^\top G \\
+                  \text{s.t. } A_\mathrm{ineq} \lt b_\mathrm{ineq} \\
+                  \end{gathered}
+                  $$
+                </div>
+
+                <p class="content-pragraph">Where the Hessian and gradient matrices are defined as:</p>
+ 
+                <div class="latex-block">
+                  $$
+                  \begin{gathered}
+                  H = A_1^\top A_1 + \epsilon I \\
+                  G = -A_1^\top(\dot{H}^\star - \mathbf{f}_g) \\
+                  \end{gathered}
+                  $$
+                </div>
+ 
+            <p class="content-paragraph">Where $\dot{H}^\star$ is the same as in the two-foot case above, defined via linear and angular momentum components with a PID controller.</p>
+
+  </div>
+
+</details>
+        
+        </div>
+    </details>
+
+    <hr class="border-gray-600 my-8">
+    
+    <h2 class="section-title">Software Architecture</h2>
+    <div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-6">
+        <ul class="space-y-3">
+            <li class="text-gray-200"><strong class="text-purple-300">Language</strong>: Python using <code>JAX</code>, and a custom state-machine framework (not outlined here).</li>
+            <li class="text-gray-200"><strong class="text-purple-300">Optimization</strong>:  <a href="https://github.com/google/jaxopt" class="text-blue-400 hover:text-blue-300 transition-colors"><code class="bg-gray-800 px-2 py-1 rounded">JAXOpt</code></a> OSQP solver for quadratic programming.</li>
+        </ul>
+    </div>
+    <hr class="border-gray-600 my-8">
+
+    <h2 class="section-title">Results</h2>
+
+      <p class="content-paragraph">So far, the main result of this project has been the proof of concept for the scalability and differentiability of the controller for the AMI research group to evaluate more controllers in the future. The work done here exhibits the possibiilty of future testing on other humanoid robots (such as <a href="https://ami.iit.it/human-robot-collaboration" class="text-blue-400 hover:text-blue-300 transition-colors bg-gray-800 px-2 py-1 rounded">ErgoCub</a>). The results on <a href="https://icub.iit.it/" class="text-blue-400 hover:text-blue-300 transition-colors bg-gray-800 px-2 py-1 rounded">iCub</a> are shown in the video below. Note that the instability shown in the arm positioning is due to the postural gain matrices not being tuned to compensate for joint coupling, and the group plans to go off of the work <a href="https://arxiv.org/abs/2409.18649">here</a> to fix this issue in the future. </p>
+
+    <!-- Replace YOUR_VIDEO_URL with your actual GitHub video URL -->
+    <div class="mb-8">
+        <h4 class="subheading video-title">iCub Controller Demo Video</h4>
+        <video controls class="w-full rounded-lg border border-gray-600">
+            <source src="https://github.com/user-attachments/assets/18768fee-e2b5-4d75-85f8-7b6971f49456
+" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    </body>
+</html>

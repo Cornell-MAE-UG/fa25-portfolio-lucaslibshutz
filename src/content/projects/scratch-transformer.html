@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+      /* Page-specific styles for momentum-controller */
+        .latex-block {
+            background-color: rgb(17 24 39 / 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgb(55 65 81);
+            margin: 1rem 0;
+        }
+        
+        .content-paragraph {
+            color: rgb(229 231 235);
+            line-height: 1.625;
+            margin-bottom: 1rem;
+        }
+        
+        /* Collapsible section styling */
+        .theoretical-section summary {
+            list-style: none;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .theoretical-section summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .theoretical-section summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 1rem;
+            line-height: 1;
+        }
+        
+        .theoretical-section[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        .theoretical-content {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+        
+        /* Subsection styling - completely independent from main section */
+        details.subsection {
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+        }
+        
+        details.subsection summary {
+            list-style: none;
+            position: relative;
+            padding-left: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        details.subsection summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        /* Closed subsection arrow - pointing right */
+        details.subsection:not([open]) summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        /* Open subsection arrow - pointing down */
+        details.subsection[open] summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        .subsection summary h3 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        .subsection-content {
+            animation: slideDown 0.3s ease-out;
+            padding-top: 0.5rem;
+        }
+        
+        /* Default heading styles */
+        h1.page-title {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2.section-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        h3.subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h4.subheading {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .collapsible-summary {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .collapsible-summary:hover {
+            color: rgb(147 197 253);
+        }
+        
+        .video-title {
+            text-align: center;
+        }
+
+        ul, ol {
+          padding-left: 1.25 rem; /* indent list content */
+          margin: 0.75 rem 0; /* vertical rhythm */
+        }
+        ul { list-style: disc; }
+        ol { list-style: decimal; }
+        /* nested list styles */
+        ul ol { list-style: circle; }
+        ol ol { list-style: lower-alpha; }
+
+        a {
+          color: rgb(59, 130, 246);
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div align="center">
+<h1 class="page-title">Page Coming Soon</h1>
+</div>
+
+</body>
+</html>

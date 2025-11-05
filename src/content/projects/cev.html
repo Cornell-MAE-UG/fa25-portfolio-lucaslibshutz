@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+      /* Page-specific styles for momentum-controller */
+        .latex-block {
+            background-color: rgb(17 24 39 / 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgb(55 65 81);
+            margin: 1rem 0;
+        }
+        
+        .content-paragraph {
+            color: rgb(229 231 235);
+            line-height: 1.625;
+            margin-bottom: 1rem;
+        }
+        
+        /* Collapsible section styling */
+        .theoretical-section summary {
+            list-style: none;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .theoretical-section summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .theoretical-section summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 1rem;
+            line-height: 1;
+        }
+        
+        .theoretical-section[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        .theoretical-content {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+        
+        /* Subsection styling - completely independent from main section */
+        details.subsection {
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+        }
+        
+        details.subsection summary {
+            list-style: none;
+            position: relative;
+            padding-left: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        details.subsection summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        /* Closed subsection arrow - pointing right */
+        details.subsection:not([open]) summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        /* Open subsection arrow - pointing down */
+        details.subsection[open] summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        .subsection summary h3 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        .subsection-content {
+            animation: slideDown 0.3s ease-out;
+            padding-top: 0.5rem;
+        }
+        
+        /* Default heading styles */
+        h1.page-title {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2.section-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        h3.subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h4.subheading {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .collapsible-summary {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .collapsible-summary:hover {
+            color: rgb(147 197 253);
+        }
+        
+        .video-title {
+            text-align: center;
+        }
+
+        ul, ol {
+          padding-left: 1.25 rem; /* indent list content */
+          margin: 0.75 rem 0; /* vertical rhythm */
+        }
+        ul { list-style: disc; }
+        ol { list-style: decimal; }
+        /* nested list styles */
+        ul ol { list-style: circle; }
+        ol ol { list-style: lower-alpha; }
+
+        a {
+          color: rgb(59, 130, 246);
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <h1 class="page-title">Cornell Electric Vehicles</h1>
+
+    <h4 class="subheading" style="color: rgb(239 68 68);"><em><b>Cornell's foremost student project team dedicated to efficient and autonomous electric vehicles.</b></em></h4>
+
+    <hr class="border-gray-600 my-8">
+
+    <h2 class="section-title">My Roles</h2>
+
+<h3 class="subsection-title">Chassis Lead (January 2025 - Present)</h3>
+
+
+<h4 class="subheading">Transition to Autodesk Alias</h4>
+
+  <p class="content-paragraph">During the start of the design cycle for the UC'25 vehicle, I lead the team in the transition from our previous surfacing tool, Autodesk Inventor, to using <a href="https://www.autodesk.com/products/alias-products/overview" class="font-bold">Autodesk Alias</a>, the industry standard tool for modeling of organic and automotive design. The main reason that I pushed for the team to do this was for adaptability and alignment with industry. </p>
+
+<p class="content-paragraph">For example, one of the main benefits that Alias presents in contrast to inventor is <b>ease-of-analysis.</b> If we see that our design is creating too much drag, or maybe a wheel cutout is too big, in Alias we can simply move the surface over to accomodate for this or any similar design change. However, in Inventor this would require remaking the entire vehicle from scratch.</p>
+
+<p class="content-paragraph">This is where the benefit of <b>construction history</b> comes in. In Alias, we can have the program remember the previous alterations, surface features, or most operations that depend on one another. As a result, the entire design is fully manipulable.  Aside from this, Alias also allows our team to make our molds <b>easier to manufacture</b>, and also allow us to iterate quicker. This, in total, leads to a <b>more aerodynamic</b> and <b>more efficient</b> car. </p>
+
+<p class="content-paragraph">Currently, Alias is now a team-standardized design product for the aerodynamic design of our car, and remains a fixture in our day-to-day work on the Chassis subteam. </p>
+
+<h4 class="subheading">AirCat Pneuamtic Tools</h4>
+
+<p class="content-paragraph">During my time as lead, I have also had the pleasure of being able to <b>secure and maintain a partnership</b> with <a href="https://aircat.com" class="font-bold">AirCat Pneumatic Tools</a>, one of the leading pneumatic tool manufacturers in the aerospace industry. With their suppoort, the Chassis team has been able to significnatly reduce our mold manufacturing time, and also allowing us to polish our molds to a 3000+ grit surface finish, resulting in clear-coat like finishes of our carbon fiber parts directly out of the mold.<p>
+
+<h4 class="subheading">GitHub for Project Organization</h4>
+
+<p class="content-paragraph">In order to keep track of the various manufacturing, research, and other various tasks that the Chassis team needs to keep track of, I architected the team's first GitHub project tracking system for our subteam. I was inspired by my work at the <a href="/projects/momentum-controller" class="font-bold">Italian Institute of Technology</a> this summer (2025), where the lab used the GitHub projects system as standard across every team. <p>
+
+<p class="content-paragraph">Currently, the system is split into two main repositories. The first is our <a href="https://github.com/cornellev/component_chassis">general tracking repository</a>, where the team keeps track of all tasks that need to be done. The second repsitory that we use is for documentation, aptly named <a href="https://github.com/cornellev/chassis-docs" class="font-bold"><code>chassis-docs</code></a>. This was based off of my current note taking system based in <a href="https://obsidian.md" class="font-bold">obsidian</a>, where we structure our documentation as a knowledge network, in order to faciliate the best retention and organization (in my opinion). At the moment, each member works in their own branch, and the team completes a documentation review using GitHub pull requests before it is merged into the main branch, so that we keep a level of quality across our repository. </p>
+
+
+<h3 class="subsection-title">Manufacturing Lead (August 2025 - Present)</h3>
+
+<p class="content-paragraph">For this semester, I am in charge of the Mechanical team's manufacturing effort, ensuring that the car is made <i>on time</i>. This includes:</p>
+
+<ul>
+<li>Ensuring machinability of all parts, so that we can make them in house.</li>
+<li>Enforcing part requirements and standards, so that our parts fit the way we expect.</li>
+<li>Training members in more advanced machining concepts, such as basic G-Code on mills and lathes.</li>
+</ul>
+
+<p class="content-paragraph">I am also one of the three blue apron machinists on the team, part of a small fraction of engineering students certified to use the advanced CNC machines in the shop, required for our most complex parts.  </p>
+
+<h3 class="subsection-title">Autonomy Subteam Member (August 2025 - Present)</h3>
+
+<p class="content-paragraph">In addition to my mechanical roles, I am also a member of the Autonomy subteam, where I work on:</p>
+
+<ul>
+<li>Optimizing object detection algorithms via decision trees.</li>
+<li>Ensuring all software is easily installable and replicable across platforms.</li>
+<li>Making sure that algorithms are physically consistent, and match up and acitvely assist with other subteams' engineering efforts.</li>
+</ul>
+
+<h3 class="subsection-title">Website Designer (August 2025 - Present)</h3>
+
+<p class="content-paragraph">In addition to my more engineering-focused roles, I also designed and coded the <a href="https://cornellev.org" class="font-bold">new website</a>  for our team, porting the old styling choices from the previous site. The reason for remaking the site this way was twofold: being able to <b>have ownership of our own data</b>, and be able to <b>standardize version control </b> for our site. As Git/version control software is industry standard, I wanted to make sure that any member with relevant experience could suggest their own edits to the site, so that we could improve it as much as possible. Furthermore, transitioning from Wix to NextJS yielded a significantly faster, and cleaner website, and one that we could choose where to host. Finally, the extensibiilty that pure JavaScript provides means that the site is able to adapt to any future framework that might come up in the future. Also, with the introduction of Agentic AI into most modern code editors, even team members with very little coding experience can make very large changes to the site. <p>
+
+<h3 class="subsection-title">Chassis Subteam Member (January 2024 - January 2025)</h3>
+
+<p class="content-paragraph">During my freshman year as I led the transition to <a href="https://www.autodesk.com/products/alias-products/overview" class="font-bold">Autodesk Alias</a>, I also was the first to demonstrate its functionality. As a result, I was responsible for the design and iteration of the UC'25 and UC'26 chassis, designing the body around the existing baseplate which we already had manufactured.     <p>
+
+<p class="content-paragraph">As a result of my work, we went from an incredibly difficult design process in Autodesk Inventor to a relatively simple and straightforward one in Alias. Once I had learnt the basics, it was quite easy to iterate and complete the design before the spring design review that year (2024). After finishing, I presented to the full team my work, and showed that we were on schedule to manfuacturing our carbon fiber shell for the competition in the next year. However, due to supplier issues we were not able to get our molds to our workshop in time, even though the designs were finalized. </p>
+
+
+</body>
+</html>
