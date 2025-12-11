@@ -30,12 +30,20 @@ export default function ProjectsPage() {
                 image: "/images/ergoCub.png"
               },
               {
+                title: "Torque Wrench Design Project",
+                location: "Cornell University MAE",
+                time: "(December 2025)",
+                description: "Designed and iterated a torque wrench using both Python and ANSYS Mechanical.",
+                tech: ["Python","ANSYS","Fusion 360", "Fracture Mechanics"],
+                href: "/projects/torque_wrench",
+                image: "/images/torque_wrench1_tp.png"
+              },
+              {
                 title: "Qualitative to Quantitative Data Transformer",
                 location: "Scratch Foundation",
                 time: "(June 2024 - August 2024)",
                 description: "I developed a transformer model pipline that converted large databases of Scratch user comments into easily analyzable quantitative data for the research team.",
                 tech: ["K-Means Clustering", "Docker", "Transformers", "Linux"],
-                href: "/projects/scratch-transformer",
                 image: "/images/scratch.png"
               },
               {
@@ -44,7 +52,6 @@ export default function ProjectsPage() {
                 time: "(August 2022)",
                 description: "I created a custom Python script that automatically sorted and labeled all engineering schematics.",
                 tech: ["Python", "Pandas"],
-                href: "/projects/avstar",
                 image: "/images/avstar.png"
               }
             ].map((project, index) => (
@@ -79,8 +86,8 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Project Image */}
-                <div className="lg:w-1/3 flex-shrink-0">
-                  <div className="w-full h-48 lg:h-full rounded-xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <div className="lg:w-1/3 shrink-0">
+                  <div className="w-full h-48 lg:h-full rounded-xl overflow-hidden bg-linear-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                     {project.image ? (
                       <img
                         src={project.image}

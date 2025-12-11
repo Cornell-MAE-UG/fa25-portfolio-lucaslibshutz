@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+      /* Page-specific styles for momentum-controller */
+        .latex-block {
+            background-color: rgb(17 24 39 / 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgb(55 65 81);
+            margin: 1rem 0;
+        }
+        
+        .callout-block {
+            background-color: rgb(17 24 39 / 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgb(55 65 81);
+            margin: 1rem 0;
+        }
+        
+        .content-paragraph {
+            color: rgb(229 231 235);
+            line-height: 1.625;
+            margin-bottom: 1rem;
+        }
+        
+        /* Collapsible section styling */
+        .theoretical-section summary {
+            list-style: none;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .theoretical-section summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        .theoretical-section summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 1rem;
+            line-height: 1;
+        }
+        
+        .theoretical-section[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        .theoretical-content {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+        
+        /* Subsection styling - completely independent from main section */
+        details.subsection {
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+        }
+        
+        details.subsection summary {
+            list-style: none;
+            position: relative;
+            padding-left: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        details.subsection summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        /* Closed subsection arrow - pointing right */
+        details.subsection:not([open]) summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        /* Open subsection arrow - pointing down */
+        details.subsection[open] summary::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            transition: transform 0.2s ease;
+            color: rgb(147 197 253);
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+        
+        .subsection summary h3 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        .subsection-content {
+            animation: slideDown 0.3s ease-out;
+            padding-top: 0.5rem;
+        }
+        
+        /* Default heading styles */
+        h1.page-title {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        h2.section-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        h3.subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h4.subheading {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: white;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .collapsible-summary {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .collapsible-summary:hover {
+            color: rgb(147 197 253);
+        }
+        
+        .video-title {
+            text-align: center;
+        }
+
+        ul, ol {
+          padding-left: 1.25 rem; /* indent list content */
+          margin: 0.75 rem 0; /* vertical rhythm */
+        }
+        ul { list-style: disc; }
+        ol { list-style: decimal; }
+        /* nested list styles */
+        ul ol { list-style: circle; }
+        ol ol { list-style: lower-alpha; }
+
+        a {
+          color: rgb(59, 130, 246);
+        }
+
+        .table-container {
+          max-width: 100%;
+          overflow-x: auto;
+          margin: 1.5rem 0;
+        }
+
+        table.nice-table {
+          border-collapse: collape;
+          width: 100%;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+          font-size: 0.9rem;
+        }
+
+        table.nice-table thead {
+          background: #1B2028;
+          color: #f5f5f5
+        }
+
+        table.nice-table th,
+        table.nice-table td {
+          padding: 0.4rem 0.7rem;
+          text-align: left;
+          border-bottom: 1px solid #333;
+          white-space: nowrap;
+        }
+
+        table.nice-table tbody tr:nth-child(even) {
+          background: #2C3441;
+        }
+
+        <!-- table.nice-table tbody tr:hover { -->
+        <!--   background: #374151; -->
+        <!-- } -->
+
+    </style>
+</head>
+
+
+<body>
+
+    <h1 class="page-title">Torque Wrench Design Project</h1>
+
+    <h3 class="subsection-title" style="color: rgb(239 68 68);"><em><b>Final Project for MAE 3270: Mechanics of Materials.</b></em></h3>
+
+    <hr class="border-gray-600 my-8">
+
+    <!-- <h2 class="section-title">Project Overview</h2> -->
+
+    <p class="content-paragraph">This project focused on improving the design of a torque wrench meant to output $600 \ \text{lbf}$ of force. I started with iterating through both different dimensions and materials simultaneously, all using a custom <code>python</code> script. </p>
+
+    <h2 class="section-title">Project Requirements</h2>
+    
+    <div align="center">
+    <img src="/images/torque_wrench1.png" class="rounded-md border border-white/20" width="300"/>
+    </div>
+
+
+      <p class="content-paragraph">From the requirements for the assignment, I had to ensure that a torque wrench could deliver a strain output of $1.0 \ \text{mV/V}$ at a rated torque of $600 \text{ in}\cdot\text{lbf}$. This also corresponded with a list of other factor of safety requirements to ensure consistent usage over $10^6$ cycles. These included:</p>
+
+    <div class="callout-block">
+      <h4 class="subsection" style="margin-top: 0.5rem;"><b>Design Requirements:</b></h4>
+      <ul>
+        <li>Safety factor of $X_0=4$ for yield or brittle failure</li>
+        <li>Safety factor of $X_K=2$ for crack growth, from an assumed initial crack depth of $a=0.04\text{ in} \ (1\text{ mm})$.</li>
+        <li>Fatigue stress safety factor of $X_S=1.5$</li>
+        <li>Material must be steel, aluminum, or titanium alloy.</li>
+      </ul>
+    </div>
+
+    <h2 class="section-title">Hand Calculations</h2>
+
+    <p>In order to perfrom a survey not just on different materials, but on the adjustable dimensions $L$, $b$, $h$, and $c$ (distance from the strain gauge), I developed a custom <code>python</code> script to sort through all possible designs and materials simulatneously. Before making the script, I made an outline of the process as follows:</p>
+
+    <div class="callout-block">
+        <h4 class="subsection" style="margin-top: 0.5rem;"><b>Script Outline</b></h4>
+        <ol>
+            <li>Define <code>Material</code>, <code>Geometry</code>, and <code>GaugeSetup</code> classes to ensure easy modularity for analysis.</li>
+            <li>Construct <code>evaluate_design</code> function, which evalutes the desired quantities for the current configuration.</li>
+            <li>Finally, construct the <code>sweep_designs</code> function, which simulateously iterates through both geometries and materials in order to find the most suitable candidate.</li>
+        </ol>
+    </div>
+
+    <p class="content-paragraph">The full script can be found <a href="https://github.com/lucaslibshutz/torque_wrench" class="font-bold">here</a>.</p>
+    <details class="theoretical-section">
+
+    <summary class="subsection collapsible-summary">
+        <h3 class="subsection-title"><u>Cantilever Beam Theory &amp; Equations</u></h3>
+    </summary>
+
+        <div class="theoretical-content">
+          <p class="content-paragraph">The torque wrench can be modeled as a cantilever beam with a moment at the end. The following equations are used to determine the stress, strain, and deflection of the beam.</p>
+
+          <p class="content-paragraph">We start with the beam, which is fixed at one end and free at another, as shown in the diagram below: </p>
+
+          <div align="center">
+            <img src="/images/beam.png" class="rounded-md" width="300"/>
+          </div>
+
+          <p class="content-paragraph">We know that by assuming a reaction force at the wall, we have the following moment balance:</p>
+
+          <div class="latex-block">
+          $$
+          \sum \mathbf{M}_z = F\cdot L - M = 0 \implies F = \frac{M}{L} \tag{1}
+          $$
+          </div>
+
+          <p class="content-paragraph">We also know that the moment of inertia for a rectangular cross section is $I_\text{beam}=\frac{1}{12}bh^3$. Since we know that this is pure bending, we can write the bending stress as:</p>
+
+          <div class="latex-block">
+          $$
+            \sigma_\text{max} = \frac{My}{I} = \frac{Mh/2}{\left(\frac{1}{12}\right)bh^3} = \frac{6Mc}{bh^3} \tag{2}
+          $$
+          </div>
+
+              <p class="content-paragraph">We also know that at the gauge, the moment must be $F \cdot (L-c)$, and so the corresponding bending stress at that location is simply $\sigma_\text{gauge}=\frac{M_\text{gauge}y}{I}$, with the same inertia and $y$ value as above.</p>
+
+          <p class="content-paragraph">Finally, we can also calculate the deflection at the end of the beam using the following equation:</p>
+
+          <div class="latex-block">
+          $$
+            \delta_\text{tip} = \frac{F L^3}{3EI} \tag{3}
+          $$
+          </div>
+
+          <p class="content-paragraph">And from the bending stress at the gauuge, we can then calculate the strain via Hooke's law:</p>
+
+          <div class="latex-block">
+          $$
+            \epsilon_\text{gauge}= \frac{\sigma_\text{gauge}}{E} \tag{4}
+          $$
+          </div>
+
+          <p class="content-paragraph">We can then calculate the strain in voltage rather than in displacement. Since we know that the strain gauuge is a wheatstone bridge, we can use the following formula to convert to $\text{mV}$ per $\text{V}$:</p>
+
+
+          <div class="latex-block">
+          $$
+          \epsilon_\text{gauge}\left[\frac{\text{mV}}{\text{V}}\right]= \epsilon_\text{gauge}[\text{in}] \times B \times G \times 10^3 \tag{5}
+          $$
+          </div>
+
+          <p class="content-paragraph">Where $B$ and $G$ are the bridge and gauge factor, respectively. I asssumed a gauge factor of $G=2.03$ and a bridge factor of $B=0.5$, which yielded accurate results when comparing to a baseline analysis (shown later). </p>
+
+          <p class="content-paragraph:">Finally, for the fatigue and fracture parameters, we can calculate them via the following formulas:</p>
+
+          <div class="latex-block">
+          $$
+          \begin{gather*}
+                X_0 = \frac{\sigma_0}{\sigma_\text{max}}, \hspace{0.1in} X_S = \frac{\sigma_\text{fatigue}}{\sigma_\text{max}} \\ \\
+            K_\text{max} = Y_\text{geom} \sigma_\text{max} \sqrt{\pi a}, \hspace{0.1in} X_K = \frac{K_{IC}}{K_\text{max}} \\
+
+          \end{gather*}
+          \tag{6-9}
+          $$
+          </div>
+      </div>
+
+    <hr class="border-gray-600 my-8">
+    </details>
+
+
+    <h3 class="subsection-title">Baseline Case: Analysis Results</h3>
+
+    <p class="content-paragraph">From the script linked in <a href="https://github.com/lucaslibshutz" class="font-bold">this repository</a>, I took the given parameters for a worked example from the assignment, which had the following parameters (given M42 steel):</p>
+
+    <div class="callout-block">
+      <h4 class="subsection" style="margin-top: 0.5rem;"><b>Baseline Parameters:</b></h4>
+      <ul>
+          <li>$L=16 \text{ in}$</li>
+          <li>$h=0.75 \text{ in}$</li>
+          <li>$b=0.5 \text{ in}$</li>
+          <li>$c=1.0 \text{ in}$</li>
+          <li>$E=32\times 10^6 \text{ psi}$</li>
+          <li>$\nu=0.29$</li>
+          <li>$\sigma_u=370\times10^3 \text{ psi}$</li>
+          <li>$K_{IC}=15\times10^3 \text{ psi} \sqrt{\text{in}}$</li>
+          <li>$\sigma_\text{fatigue}=115\times 10^3 \text{ psi}$ (for $10^6$ cycles (for $10^6$ cycles))</li>
+      </ul>
+
+    </div>
+    <p class="content-paragraph">From these, we should expect:</p>
+
+    <div class="callout-block">
+      <h4 class="subheading" style="margin-top: 0rem;"><b>Expected Results:</b></h4>
+        <ul>
+          <li>$\delta_\text{tip}=0.091 \text{ in}$</li>
+          <li>$\sigma_\text{max}=12.80 \text{ ksi}$</li>
+          <li>$X_0=28.9$</li>
+          <li>$X_K=2.95$</li>
+          <li>$X_S=8.98$</li>
+          <li>$\epsilon_\text{gauge}=375 \mu\epsilon = 0.38 \text{ mV/V}$</li>
+        </ul>
+    </div>
+
+    <p class="content-paragraph">Running the script with these parameters yielded the following results:</p>
+
+    <div class="callout-block">
+        <pre style="background: none; border: none; padding: 0; margin: 0; font-family: monospace; white-space: pre; color: inherit; user-select: none;"><code style="background: transparent; padding: 0;">---- Loads &amp; section ----
+Tip force F              = 37.500 lbf
+I (rect. section)        = 0.017578 in^4
+---- Stress &amp; deflection ----
+Max normal stress (drive)= <b class="text-orange-600">12.80 ksi</b>
+Stress at gauge          = 12.00 ksi
+Tip deflection           = <b class="text-orange-600">0.0910 in</b>
+---- Strain &amp; sensitivity ----
+Strain at gauge          = <b class="text-orange-600">375.0 µε</b>
+Bridge output            = <b class="text-orange-600">0.38 mV/V</b>
+---- Safety factors ----
+Strength n_o             = <b class="text-orange-600">28.91</b>
+Crack growth n_K         = <b class="text-orange-600">2.95</b>
+Fatigue n_S              = <b class="text-orange-600">8.98</b></code></pre>
+    </div>
+
+    <p class="content-paragraph">Note that all of the results shown in orange are exactly as we expected.</p>
+    <!-- <hr class="border-gray-600 my-8"> -->
+
+    <h3 class="subsection-title">Baseline FEM Analysis in <a href="https://ansys.com" >ANSYS</a></h3>
+
+    <p class="content-paragraph">To verify these results, I also created an FEM model in ANSYS Mechanical to simulate the same geometry and loading conditions. I setup the torque wrench with a <em>zero-displacement</em> boundary condition at the drive, and an equivalent moment applied from the end.</p>
+
+    <hr class="border-gray-600 my-8">
+
+    <h2 class="section-title">Design Optimization</h2>
+
+    <p class="content-paragraph">After verifying the baseline case, I then moved on to running the full design optimization script. This involved iterating through different materials (steel, aluminum, titanium) as well as different dimensions for $L$, $b$, $h$, and $c$. The ranges for these parameters were as follows:</p>
+
+    <div class="callout-block">
+        <h4 class="subheading" style="margin-top: 0.5rem;"><b>Design Parameter Ranges:</b></h4>
+        <ul>
+          <li>$L = \{\underbrace{14.0}_{L_\text{min}}: \underbrace{0.25}_{\Delta L}: \underbrace{25.0}_{L_\text{max}}\} \text{ in} $</li>
+          <li>$c= \{0.75:0.125:1.6\} \text{ in}$</li>
+          <li>$h= \{0.4:0.05:0.85\} \text{ in}$</li>
+          <li>$b= \{0.4:0.05:0.85\} \text{ in}$</li>
+        </ul>
+        <h4 class="subheading" style="margin-top: 0.5rem;"><b>Materials Tested:</b></h4>
+        <ul>
+          <li><b>M42 Steel</b> $\left(E=32\times10^6 \text{ psi}, \rho=0.283 \text{ lbs/in}^3\right)$</li>
+          <li><b>Maraging Steel</b> $\left(E=26.5\times10^6 \text{ psi}, \rho=0.290 \text{ lbs/in}^3\right)$</li>
+          <li><b>Ti-6Al-4V</b> $\left(E=16.5\times10^6 \text{ psi}, \rho=0.160 \text{ lbs/in}^3\right)$</li>
+          <li><b>Al-7075-T6</b> $\left(E=10.4\times10^6 \text{ psi}, \rho=0.101 \text{ lbs/in}^3\right)$</li>
+        </ul>
+    </div>
+
+      <p class="content-paragraph">After running the sweep via the <code>sweep_designs</code> function, which ensured that all viable designs met the requirements outlined above, I transferred the results to a <code>pandas</code> dataframe. From there, I sorted the data first by the tip deflection $\delta_\text{tip}$, and then by strength safety factor $X_S$, and then finally by density $\rho$. This yielded the following 5 "best" choices:</p>
+<div class="rounded-lg overflow-hidden border border-gray-600/40">
+    <table id="T_a8838" class="nice-table ">
+    <thead>
+      <tr>
+        <th id="T_a8838_level0_col0" class="col_heading level0 col0" >Material</th>
+              <th id="T_a8838_level0_col1" class="col_heading level0 col1" >$\delta_\text{tip}$</th>
+        <th id="T_a8838_level0_col2" class="col_heading level0 col2" >$X_S$</th>
+        <th id="T_a8838_level0_col3" class="col_heading level0 col3" >Weight (lbs)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="text-red-600 underline">
+        <td id="T_a8838_row0_col0" class="data row0 col0" >Al-7075-T6</td>
+        <td id="T_a8838_row0_col1" class="data row0 col1" >0.18</td>
+        <td id="T_a8838_row0_col2" class="data row0 col2" >6.49</td>
+        <td id="T_a8838_row0_col3" class="data row0 col3" >0.57</td>
+      </tr>
+      <tr>
+        <td id="T_a8838_row1_col0" class="data row1 col0" >Al-7075-T6</td>
+        <td id="T_a8838_row1_col1" class="data row1 col1" >0.18</td>
+        <td id="T_a8838_row1_col2" class="data row1 col2" >6.49</td>
+        <td id="T_a8838_row1_col3" class="data row1 col3" >0.57</td>
+      </tr>
+      <tr>
+        <td id="T_a8838_row2_col0" class="data row2 col0" >Al-7075-T6</td>
+        <td id="T_a8838_row2_col1" class="data row2 col1" >0.18</td>
+        <td id="T_a8838_row2_col2" class="data row2 col2" >6.49</td>
+        <td id="T_a8838_row2_col3" class="data row2 col3" >0.57</td>
+      </tr>
+      <tr>
+        <td id="T_a8838_row3_col0" class="data row3 col0" >Al-7075-T6</td>
+        <td id="T_a8838_row3_col1" class="data row3 col1" >0.18</td>
+        <td id="T_a8838_row3_col2" class="data row3 col2" >6.49</td>
+        <td id="T_a8838_row3_col3" class="data row3 col3" >0.57</td>
+      </tr>
+      <tr>
+        <td id="T_a8838_row4_col0" class="data row4 col0" >Al-7075-T6</td>
+        <td id="T_a8838_row4_col1" class="data row4 col1" >0.18</td>
+        <td id="T_a8838_row4_col2" class="data row4 col2" >6.49</td>
+        <td id="T_a8838_row4_col3" class="data row4 col3" >0.58</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <p class="content-paragraph">From this, I decided to use the <b class="text-red-600">lightest</b> Aluminum-7075-T6 design with the <b>least</b> deflection. This had the following dimensions:</p>
+  <ul>
+      <li>$L=14.0 \text{ in}$</li>
+      <li>$h=0.8 \text{ in}$</li>
+      <li>$b=0.5 \text{ in}$</li>
+      <li>$c=0.75 \text{ in}$</li>
+  </ul>
+
+
+  <p class="content-paragraph">Starting with the initial CAD model, I iterated on the design by adding a small fillet at the drive in order to minimize stress concentrations. The CAD model, prior to analysis, looked like the following:</p>
+
+  <h3 class="subsection-title">Optimized CAD Model</h3>
+  <div align="center">
+  <img src="/images/torque_wrench_CAD.png" class="rounded-md border border-white/20 bg-#0c0d13" width="600" style="margin-bottom: 30px;"/>
+  </div>
+
+
+    <p class="content-paragraph">Note the strain gauge location placed $(L-c)$ away from the handle, in <i class="text-orange-600">orange</i>. From the material properties above, this design weighs only $0.57 \text{ lbs}$, while maintaining a low $\delta_\text{tip}=0.18\text{ in}$, even with the material's relatively low elastic modulus of $E=10.4\times10^6\text{ psi}$. I also added a $0.1\text{ in}$ radius fillet at the drive, in order to avoid stress concentrations.</p>
+
+  <h3 class="subsection-title">FEM Analysis Setup in ANSYS Mechanical</h3>
+      <p class="content-paragraph">Setting up the FEM analysis in ANSYS Mechanical, I applied the same boundary conditions as before, with a fixed support at the drive surfaces and an applied force at the end. I also refined the mesh around the strain gauge location to ensure accurate strain readings. The mesh consisted of tetrahedral elements with a maximum element size of $0.1 \text{ in}$ for the whole surface, with a smaller sizing of $6\times10^{-2}\text{ in}$ near the drive.</p>
+
+    <div align="center">
+    <img src="/images/wrench_mesh.jpg" class="rounded-md border border-white/20" style="margin-bottom: 20px;" width="600"/>
+    <img src="/images/wrench_ansys_setup.jpg" class="rounded-md border border-white/20" style="margin-bottom: 20px;" width="600"/>
+    </div>
+    <h3 class="subsection-title">FEM Plots &amp; Results</h3>
+
+    <div align="center">
+      <img src="/images/wrench_normal_strain.jpg" class="rounded-md border border-white/20" style="margin-bottom: 20px;" width="600"/>
+      <img src="/images/wrench_max_p_stress.jpg" class="rounded-md border border-white/20" style="margin-bottom: 20px;" width="600"/>
+    </div>
+    <div class="callout-block">
+      <h4 class="subheading" style="margin-top: 0.5rem;"><b>Numerical Results:</b></h4>
+      <ul>
+        <li>$\sigma_\text{normal(max)}=35.374\text{ ksi}$</li>
+        <li>$\delta_\text{max}=0.26742\text{ in}$</li>
+        <li>$\epsilon_\text{gauge}=1023.4 \ \mu\epsilon$</li>
+      </ul>
+  </div>
+
+    <p class="content-paragraph">We also know, from equation (5) in the theory section, that in order to convert our strain gauge output to $\text{mV/V}$, all we need to do is multiply by $B$ and $G$. From this, we get $\epsilon_\text{gauge}=1.04 \text{ mV/V}$, which satisfies our requirement above of having at least $1.0 \text{ mV/V}$ at the gauge to satisfy our torque requirement.</p>
+
+    <p class="content-paragraph">For this design, an example strain gauge that would work would be the <a href="https://www.hbkworld.com/en/products/transducers/strain/experimental-testing/y-series/vy/p-1-MY27-15/350?ka_keyattr_strain_gauges.sg_geometry=val_Full+bridge+circuit" class="font-bold">MY27-15/350</a>, whose dimensions are $0.670\text{ in}\times0.670 \text{ in}$, which would fit nicely in our height envelope of $h=0.8\text{ in}$.</p>
+</body>
+</html>
