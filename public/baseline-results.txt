@@ -1,0 +1,14 @@
+---- Loads & section ----
+Tip force F              = 37.500 lbf
+I (rect. section)        = 0.017578 in^4
+---- Stress & deflection ----
+Max normal stress (drive)= 12.80 ksi
+Stress at gauge          = 12.00 ksi
+Tip deflection           = 0.0910 in
+---- Strain & sensitivity ----
+Strain at gauge          = 375.0 µε
+Bridge output            = 0.38 mV/V
+---- Safety factors ----
+Strength n_o             = 28.91
+Crack growth n_K         = 2.95
+Fatigue n_S              = 8.98
