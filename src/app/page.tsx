@@ -147,7 +147,7 @@ export default function Home() {
               <a
                 className="rounded-full transition-all duration-300 flex items-center justify-center gap-3 font-large text-base sm:text-lg font-bold h-12 px-6 hover:scale-105"
                 style={{background: 'rgba(255, 255, 255, 0.05)', color: 'var(--foreground)', border: '1px solid rgba(255, 255, 255, 0.1)'}} 
-                href="/files/Libshutz_Lucas_Resume.pdf"
+                href="/files/Libshutz_Lucas_Resume.pdf" target="_blank" rel="noopener noreferrer"
               >
                 Download Resume
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
